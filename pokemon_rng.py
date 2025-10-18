@@ -1,27 +1,28 @@
 import os
 import random
 from PIL import Image
+import sys
+pokedex = []
 
 SPRITE_FOLDER = "sprites"
 SHINY_FOLDER = "shiny"
+SHINY_CHANCE = 0.05
 
 def rng_sprite():
-    fichiers = [f for f in os.listdir(SPRITE_FOLDER)
+    if random.random()<SHINY_CHANCE:
+        folder = SHINY_FOLDER
+    else:
+        folder = SPRITE_FOLDER
+
+    file = [f for f in os.listdir(folder)
                 if f.lower().endswith((".png", ".jpg", ".jpeg"))]
 
-    if not fichiers:
-        raise FileNotFoundError(f"rien dans {SPRITE_FOLDER}")
+    if not file:
+        raise FileNotFoundError(f"No directory found in  {SPRITE_FOLDER}")
 
-    sprite = random.choice(fichiers)
-    return os.path.join(SPRITE_FOLDER, sprite), sprite
+    sprite = random.choice(file)
+    return os.path.join(folder, sprite), sprite, folder == SHINY_FOLDER
 
-def rng_sprite_shiny():
-    shiny_pkm = [f for f in os.listdir(SHINY_FOLDER)
-             if f.lower().endwith((".png"))]
-    if not shiny_pkm:
-        raise FileNotFoundError(f"rien dans {SHINY_FOLDER}")
-    shiny_sprite = random.choice(shiny_pkm)
-    return os.path.join(SHINY_FOLDER,shiny_pkm),shiny_pkm
 
 
 def afficher_sprite(path):
@@ -31,7 +32,37 @@ def afficher_sprite(path):
     image = image.resize((largeur * facteur, hauteur * facteur), Image.NEAREST)
     image.show()
 
-if __name__ == "__main__":
-    chemin, nom_fichier = rng_sprite() 
-    print(f"Pokémon tiré : {nom_fichier}")
-    afficher_sprite(chemin)
+while True:
+    print("\nQue voulez-vous faire ?")
+    print("1: RNG !")
+    print("2: Open pokedex")
+    print("3: Leave(will delete your pokedex)")
+    choix = input("What do you want to do? : ")
+
+    if choix == "1":
+        chemin, nom_fichier, is_shiny = rng_sprite()
+        pokedex.append(nom_fichier)
+        if is_shiny:
+            print(f"You pulled a shiny!! It's! {nom_fichier}")
+        else:
+            print(f"You pulled {nom_fichier}")
+        afficher_sprite(chemin)
+    
+    elif choix == "2":
+        if pokedex:
+            print("Here are your pokemons:" )
+            for i in pokedex:
+                print("-",i)
+    elif choix == "3":
+        print("See you later")
+        quit()
+
+
+            
+
+
+
+
+
+
+
