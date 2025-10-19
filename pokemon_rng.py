@@ -31,6 +31,7 @@ def afficher_sprite(path):
     largeur, hauteur = image.size
     image = image.resize((largeur * facteur, hauteur * facteur), Image.NEAREST)
     image.show()
+    image.close()
 
 while True:
     print("\nQue voulez-vous faire ?")
