@@ -63,7 +63,7 @@ while True:
         print(f"you have {len(pokedex)} pokemons !")
     elif choix == 3:
         i=int(input("Which pokemon do you want to delete?"))
-        del pokedex [i]
+        del pokedex [i-1]
     elif choix == 4:
         print("See you later")
         quit()
